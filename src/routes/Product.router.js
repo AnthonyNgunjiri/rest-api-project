@@ -5,9 +5,13 @@ const router = Router();
 router.get(" ", (req, res) => {
   res.send("get all product");
 });
+router.get(" id:", (req, res) => {
+  res.send("get a product");
+});
 router.post("/ id:", (req, res) => {
   res.send("add a product");
 });
+
 router.patch(" id:", (req, res) => {
   res.send("update all a product resource");
 });
