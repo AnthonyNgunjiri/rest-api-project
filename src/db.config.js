@@ -8,6 +8,7 @@ host: "localhost",
 port:5432,
 database: "client_db"
 
+
  })
 
  export default pool;
