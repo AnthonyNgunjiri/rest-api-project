@@ -27,7 +27,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-
 router.post("/", async (req, res) => {
   try {
     const {
@@ -60,8 +59,20 @@ router.post("/", async (req, res) => {
 router.patch(" /:id", (req, res) => {
   res.send("update all a product resource");
 });
-router.delete(" /id", (req, res) => {
-  res.send("delete  a product");
+
+
+router.delete("/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const deleteTool = await pool.query("DELETE  FROM products WHERE id=$1", [id]);
+    if (deleteTool.rowCount === 1) {
+      res.status(200).json({ success: true, message: "product deleted successfully" });
+    } else {
+      res.status(404).json({ success: false, message: "user not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 });
 
 export default router;
