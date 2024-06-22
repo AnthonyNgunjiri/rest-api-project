@@ -2,11 +2,10 @@ import { Router } from "express";
 import pool from "../db.config.js";
 
 const router = Router();
-//products
+
 router.get("/", async (req, res) => {
   try {
     const feedback = await pool.query("SELECT * FROM products");
-    res.json(feedback);
     res.status(200).json({ sucess: true, data: feedback.rows });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -27,27 +26,31 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 });
+
+
 router.post("/", async (req, res) => {
   try {
     const {
-      productthumbnail,
-      producttitle,
-      productdescription,
-      productcost,
-      onoffer,
+      productThumbnail,
+      productTitle,
+      productDescription,
+      productCost,
+      onOffer,
     } = req.body;
-    
+
     const feed = await pool.query(
-      "INSERT INTO products(productthumbnail, producttitle, productdescription,productcost,onoffer)VALUES($1,$2,$3,$4,$5)",[
-        productthumbnail,
-        producttitle,
-        productdescription,
-        productcost,
-        onoffer
-      ]
+      "INSERT INTO products(productThumbnail, productTitle, productDescription,productCost,onOffer) VALUES ($1,$2,$3,$4,$5) ",
+      [productThumbnail, productTitle, productDescription, productCost, onOffer]
     );
+
     if (feed.rowCount === 1) {
-      res.status(201).json({ success: true, message: "product created successfully" });
+      res
+        .status(201)
+        .json({ success: true, message: "product created successfully" });
+    } else {
+      res
+        .status(400)
+        .json({ success: false, message: "Failed to create product" });
     }
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
